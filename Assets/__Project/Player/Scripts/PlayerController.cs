@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour {
@@ -17,10 +18,6 @@ public class PlayerController : MonoBehaviour {
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void Update() {
-        HandleMovementInput();
-    }
-
     void FixedUpdate() {
         _rigidbody.velocity = new Vector2(_moveHorizontal * _moveSpeed, _rigidbody.velocity.y);
 
@@ -30,9 +27,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void HandleMovementInput() {
-        _moveHorizontal = Input.GetAxisRaw("Horizontal");
-        _moveVertical = Input.GetAxisRaw("Vertical");
+    public void HandleJump(InputAction.CallbackContext context) {
+        _moveVertical = context.ReadValue<float>();
+    }
+
+    public void HandleMovement(InputAction.CallbackContext context) {
+        _moveHorizontal = context.ReadValue<float>();
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
