@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision) {
         if (collision.collider.tag == "Environment") {
-            _canJump = GetColliderBelow() == collision.collider;
+            _canJump = _canJump || GetColliderBelow() == collision.collider;
         }
     }
 
