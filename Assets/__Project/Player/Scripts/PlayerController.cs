@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 
         if (_canJump && _moveVertical > 0.1f) {
             _rigidbody.AddForce(new Vector2(0, _moveVertical * _jumpForce), ForceMode2D.Impulse);
+            _canJump = false;
         }
     }
 
@@ -34,15 +35,21 @@ public class PlayerController : MonoBehaviour {
         _moveVertical = Input.GetAxisRaw("Vertical");
     }
 
-    void OnTriggerEnter2D(Collider2D collider) {
-        if (collider.gameObject.tag == "Environment") {
-            _canJump = true;
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.tag == "Environment") {
+            _canJump = GetColliderBelow() == collision.collider;
         }
     }
 
-    void OnTriggerExit2D(Collider2D collider) {
-        if (collider.gameObject.tag == "Environment") {
-            _canJump = false;
-        }
+    Collider2D GetColliderBelow() {
+        RaycastHit2D hit = Physics2D.BoxCast(
+            transform.position - new Vector3(0, transform.localScale.y / 2 + 0.02f, 0),
+            new Vector2(transform.localScale.x, 0.01f),
+            transform.eulerAngles.z,
+            Vector2.down,
+            0
+        );
+
+        return hit.collider;
     }
 }
