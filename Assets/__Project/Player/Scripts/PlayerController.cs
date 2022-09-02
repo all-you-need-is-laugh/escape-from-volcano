@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     private float _jumpForce = 60f;
 
     private Rigidbody2D _rigidbody;
+    private Collider2D _collider;
 
     private bool _canJump = false;
     private float _moveHorizontal;
@@ -16,6 +19,13 @@ public class PlayerController : MonoBehaviour {
 
     void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
+
+        var rigidbodyColliders = new List<Collider2D>();
+        var rigidbodyCollidersNumber = _rigidbody.GetAttachedColliders(rigidbodyColliders);
+        if (rigidbodyCollidersNumber != 1) {
+            throw new Exception($"Unexpected number of attached colliders to {name}: {rigidbodyCollidersNumber} (expected 1)");
+        }
+        _collider = rigidbodyColliders[0];
     }
 
     void FixedUpdate() {
@@ -42,9 +52,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     Collider2D GetColliderBelow() {
+        var colliderSize = _collider.bounds.size;
+
         RaycastHit2D hit = Physics2D.BoxCast(
-            transform.position - new Vector3(0, transform.localScale.y / 2 + 0.02f, 0),
-            new Vector2(transform.localScale.x, 0.01f),
+            _collider.bounds.center - new Vector3(0, colliderSize.y / 2 + 0.02f, 0),
+            new Vector2(colliderSize.x, 0.01f),
             transform.eulerAngles.z,
             Vector2.down,
             0
