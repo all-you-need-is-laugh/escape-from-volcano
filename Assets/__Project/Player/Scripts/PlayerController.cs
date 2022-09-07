@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float _moveSpeed = 3f;
@@ -12,13 +14,16 @@ public class PlayerController : MonoBehaviour {
 
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
+    private Animator _animator;
 
     private bool _canJump = false;
     private float _moveHorizontal;
     private float _moveVertical;
+    private bool _facingRight = true;
 
     void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
 
         var rigidbodyColliders = new List<Collider2D>();
         var rigidbodyCollidersNumber = _rigidbody.GetAttachedColliders(rigidbodyColliders);
@@ -30,10 +35,23 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate() {
         _rigidbody.velocity = new Vector2(_moveHorizontal * _moveSpeed, _rigidbody.velocity.y);
+        _animator.SetFloat("Speed", Mathf.Abs(_moveHorizontal));
 
         if (_canJump && _moveVertical > 0.1f) {
             _rigidbody.AddForce(new Vector2(0, _moveVertical * _jumpForce), ForceMode2D.Impulse);
             _canJump = false;
+        }
+    }
+
+    void HandleFlip(float direction) {
+        if (direction == 0) return;
+
+        float directionSign = Mathf.Sign(direction);
+        if (_facingRight != directionSign > 0) {
+            Vector2 localScale = transform.localScale;
+            localScale.x = directionSign;
+            transform.localScale = localScale;
+            _facingRight = !_facingRight;
         }
     }
 
@@ -43,6 +61,7 @@ public class PlayerController : MonoBehaviour {
 
     public void HandleMovement(InputAction.CallbackContext context) {
         _moveHorizontal = context.ReadValue<float>();
+        HandleFlip(_moveHorizontal);
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
