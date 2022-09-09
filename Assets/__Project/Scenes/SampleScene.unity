@@ -354,7 +354,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_Name
-      value: Heart (2)
+      value: Heart 1
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_RootOrder
@@ -566,7 +566,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_Name
-      value: Heart (3)
+      value: Heart 2
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_RootOrder
@@ -734,7 +734,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_Name
-      value: Coin (2)
+      value: Coin 1
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_RootOrder
@@ -791,7 +791,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_Name
-      value: Coin (3)
+      value: Coin 2
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_RootOrder
@@ -1515,7 +1515,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_Name
-      value: Heart (1)
+      value: Heart 0
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 4917c563dd41c88489d3d0364759e0cd, type: 3}
       propertyPath: m_RootOrder
@@ -1648,7 +1648,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7433270705733345662, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_Name
-      value: Coin (1)
+      value: Coin 0
       objectReference: {fileID: 0}
     - target: {fileID: 8449345309422923238, guid: 93bf5006e98d88b4785ffc91abc4e32f, type: 3}
       propertyPath: m_RootOrder
