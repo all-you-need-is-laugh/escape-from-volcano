@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(HealthSystem))]
 public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float _moveSpeed = 3f;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
     private Animator _animator;
+    private HealthSystem _healthSystem;
 
     private bool _canJump = false;
     private float _moveHorizontal;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     void Awake() {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _healthSystem = GetComponent<HealthSystem>();
 
         var rigidbodyColliders = new List<Collider2D>();
         var rigidbodyCollidersNumber = _rigidbody.GetAttachedColliders(rigidbodyColliders);
@@ -41,6 +44,19 @@ public class PlayerController : MonoBehaviour {
             _rigidbody.AddForce(new Vector2(0, _moveVertical * _jumpForce), ForceMode2D.Impulse);
             _canJump = false;
         }
+    }
+
+    void OnEnable() {
+        _healthSystem.OnDeath += Die;
+    }
+
+    void OnDisable() {
+        _healthSystem.OnDeath -= Die;
+    }
+
+    void Die() {
+        Debug.Log("Player died!");
+        Destroy(gameObject);
     }
 
     void HandleFlip(float direction) {
