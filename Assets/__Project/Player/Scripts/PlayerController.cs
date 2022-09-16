@@ -12,11 +12,14 @@ public class PlayerController : MonoBehaviour {
     private float _moveSpeed = 3f;
     [SerializeField]
     private float _jumpForce = 60f;
+    [SerializeField]
+    private GameObject _healthBar;
 
     private Rigidbody2D _rigidbody;
     private Collider2D _collider;
     private Animator _animator;
     private HealthSystem _healthSystem;
+    private HealthBarController _healthBarController;
 
     private bool _canJump = false;
     private float _moveHorizontal;
@@ -34,6 +37,10 @@ public class PlayerController : MonoBehaviour {
             throw new Exception($"Unexpected number of attached colliders to {name}: {rigidbodyCollidersNumber} (expected 1)");
         }
         _collider = rigidbodyColliders[0];
+
+        _healthBarController = _healthBar.GetComponent<HealthBarController>();
+        _healthBarController.SetMaxHealth(_healthSystem.maxHealth);
+        _healthBarController.SetHealth(_healthSystem.maxHealth);
     }
 
     void FixedUpdate() {
@@ -47,16 +54,24 @@ public class PlayerController : MonoBehaviour {
     }
 
     void OnEnable() {
-        _healthSystem.OnDeath += Die;
+        _healthSystem.OnHealthChanged += OnHealthChanged;
     }
 
     void OnDisable() {
-        _healthSystem.OnDeath -= Die;
+        _healthSystem.OnHealthChanged -= OnHealthChanged;
     }
 
     void Die() {
         Debug.Log("Player died!");
         Destroy(gameObject);
+    }
+
+    void OnHealthChanged(float currentHealth) {
+        _healthBarController.SetHealth(currentHealth);
+
+        if (currentHealth == 0) {
+            Die();
+        }
     }
 
     void HandleFlip(float direction) {
